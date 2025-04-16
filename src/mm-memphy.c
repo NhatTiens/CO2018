@@ -160,18 +160,21 @@ int MEMPHY_get_freefp(struct memphy_struct *mp, int *retfpn)
 
 int MEMPHY_dump(struct memphy_struct *mp)
 {
-  /*TODO dump memphy contnt mp->storage
-   *     for tracing the memory content
-   */
-  if(mp == NULL || mp->storage == NULL) return -1;
-   printf("MEMPHY_dump:\n");
-   for (int i = 0; i < mp->maxsz; i++) {
-        if (mp->storage[i] != 0) { // Chỉ in index có dữ liệu
-            printf("Index %d: %d\n", i, mp->storage[i]);
-        }
+    if(mp == NULL || mp->storage == NULL) {
+        return -1; // Nếu bộ nhớ không hợp lệ, trả về lỗi
     }
-   return 0;
+
+    printf("MEMPHY_dump:\n");
+    // Duyệt qua tất cả các ô bộ nhớ trong storage
+     for (long long int i = 0; i < mp->maxsz; i++) {
+      // In ra chỉ mục (index) dưới dạng hex và giá trị bộ nhớ
+      if (mp->storage[i] != 0)printf("BYTE %08lld: %08x\n", i * sizeof(mp->storage[0]), mp->storage[i]);
+      
+  }
+
+    return 0;
 }
+
 
 int MEMPHY_put_freefp(struct memphy_struct *mp, int fpn)
 {

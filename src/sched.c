@@ -56,7 +56,7 @@ struct pcb_t * get_mlq_proc(void) {
 	pthread_mutex_lock(&queue_lock);
 
 	for (int i = 0; i < MAX_PRIO; i++) {
-		int prio = (last_queue + i) % MAX_PRIO;
+		int prio = (last_queue + i) % MAX_PRIO;  // Tính mức ưu tiên tiếp theo
 
 		if (!empty(&mlq_ready_queue[prio]) && slot[prio] > 0) {
 			proc = dequeue(&mlq_ready_queue[prio]);

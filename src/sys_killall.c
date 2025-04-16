@@ -51,22 +51,23 @@
       *        name in var proc_name
       */
      
-     struct queue_t tmp = {0};
-     tmp.size = 0;
-     int reg_idx = 0;
-     while(!empty(running_list)){
-         struct pcb_t *proc = dequeue(running_list);
-         if(strcmp(proc->path, proc_name) == 0){
-             libfree(proc, reg_idx);
-         }else{
-             enqueue(&tmp, proc);
-         }
-         reg_idx++;
-     }
-     while(!empty(&tmp)){
-         struct pcb_t *proc = dequeue(&tmp);
-         enqueue(running_list, proc);
-     }
+     // Xử lý các tiến trình trong running_list
+    struct queue_t tmp = {0};
+    tmp.size = 0;
+    int reg_idx = 0;
+    while (!empty(running_list)) {
+        struct pcb_t *proc = dequeue(running_list);
+        if (strcmp(proc->path, proc_name) == 0) {
+            libfree(proc, reg_idx); // Giải phóng bộ nhớ
+        } else {
+            enqueue(&tmp, proc); // Tiến trình không trùng tên thì đưa vào tmp
+        }
+        reg_idx++;
+    }
+    while (!empty(&tmp)) {
+        struct pcb_t *proc = dequeue(&tmp);
+        enqueue(running_list, proc); // Đưa lại các tiến trình vào running_list
+    }
  
  #ifdef MLQ_SCHED
      struct queue_t tmp2 = {0};
